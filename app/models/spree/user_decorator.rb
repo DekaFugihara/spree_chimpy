@@ -2,12 +2,17 @@ if Spree.user_class
   Spree.user_class.class_eval do
     attr_accessible :subscribed
 
-    after_create  :subscribe
+    after_create  :ensure_subscription
     around_update :resubscribe
-    after_destroy :unsubscribe
+    # after_destroy :unsubscribe
     after_initialize :assign_subscription_default
 
     delegate :subscribe, :resubscribe, :unsubscribe, to: :subscription
+
+  def ensure_subscription
+    subscriber = Spree::Chimpy::Subscriber.where(email: self.email).first
+    Spree::Chimpy::Subscription.new(subscriber).subscribe if subscriber
+  end
 
   private
     def subscription
