@@ -10,7 +10,6 @@ class Spree::Chimpy::SubscribersController < Spree::BaseController
       @errors << I18n.t("spree.chimpy.subscriber.missing_email")
     else
       if Spree::Chimpy::Subscriber.where(email: params[:chimpy_subscriber][:email]).first
-        @errors <<  params[:chimpy_subscriber]
         @errors << I18n.t("spree.chimpy.subscriber.already")
       else
         @subscriber = Spree::Chimpy::Subscriber.where(email: params[:chimpy_subscriber][:email]).first_or_initialize
@@ -28,8 +27,13 @@ class Spree::Chimpy::SubscribersController < Spree::BaseController
           # end
           flash[:newsletter_subscription_tracking] = "nothing special"
           # flash[:notice] = I18n.t("spree.chimpy.subscriber.success")
+          if params[:show_success_lightbox] == "false"
+            @show_success_lightbox = false
+            session[:return_user_to] = "/compre?from=landing_cadastro"
+          else
+            @show_success_lightbox = true
+          end
         else
-          @errors <<  params[:chimpy_subscriber]
           @errors << I18n.t("spree.chimpy.subscriber.failure")
         end
       end

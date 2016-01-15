@@ -1,0 +1,33 @@
+<% @subscriber ||= Spree::Chimpy::Subscriber.new %>
+<%= form_for @subscriber do |f| %>
+	<input type="hidden" name="show_success_lightbox" value="false">
+ 	<p class="text_field">
+		<%= f.label :email, "Email*:" %><br />
+		<%= f.email_field :email, { id: "subscribe_email" } %>
+	</p>
+
+	<p class="text_field">
+		<%= f.label :nome, "Primeiro Nome:" %><br />
+		<%= f.text_field :nome, :placeholder => "Opcional" %>
+	</p>
+
+ 	<p class="radio_field">
+		<input checked="checked" id="user_type_both" name="user_type" type="radio" value="Me Interessa Comprar e Vender">
+		<label for="user_type_both">Me Interessa Comprar e Vender</label>
+
+		<input id="user_type_buy" name="user_type" type="radio" value="Me Interessa Apenas Comprar">
+		<label for="user_type_buy">Me Interessa Apenas Comprar</label>
+
+		<input id="user_type_sell" name="user_type" type="radio" value="Me Interessa Apenas Vender">
+		<label for="user_type_sell">Me Interessa Apenas Vender</label>
+	</p>
+
+	<p class="checkbox_field">
+		<%= f.check_box :subscribed %>
+		<%= f.label :subscribed, "Quero receber meu Cupom de 10% e Promoções por Email*" %>
+	</p>
+
+	<p class="button-container">
+		<%= f.submit "Cadastre-se e ganhe seu cupom", :class => 'submit button pink d3 mid', :id => 'op_subscribe' %>
+	</p>
+<% end %>

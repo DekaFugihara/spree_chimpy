@@ -12,3 +12,8 @@ Deface::Override.new(:virtual_path => "spree/info/newsletter",
                      :name         => "spree_chimpy_subscription_form_lightbox",
                      :insert_bottom => "[data-hook=subscription_form]",
                      :partial      => "spree/shared/guest_subscription")
+
+Deface::Override.new(:virtual_path => "spree/shared/_landing_cadastro",
+                     :name         => "spree_chimpy_subscription_form_landing",
+                     :insert_bottom => "[data-hook=subscription_form]",
+                     :partial      => "spree/shared/guest_subscription2")
