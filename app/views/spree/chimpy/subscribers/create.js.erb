@@ -30,6 +30,7 @@
 
   <% end %>
 <% else %>
+  $("#landing_form #mailchimp_subscribe_wrap").removeClass("loading");
   $.fancybox(
     '<h1><%= @errors.join(" , ") %></h1>',
     {
