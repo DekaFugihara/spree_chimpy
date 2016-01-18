@@ -15,9 +15,13 @@ class Spree::Chimpy::SubscribersController < Spree::BaseController
         @subscriber = Spree::Chimpy::Subscriber.where(email: params[:chimpy_subscriber][:email]).first_or_initialize
         @subscriber.update_attributes(params[:chimpy_subscriber])
         @subscriber.profile = params[:user_type]
+        
+        retrieve_utm_cookies
+
         @subscriber.utm_source ||= cookies[:utm_source]
         @subscriber.utm_campaign ||= cookies[:utm_campaign]
         @subscriber.utm_medium ||= cookies[:utm_medium]
+        @subscriber.utm_term ||= cookies[:utm_term]
         if @subscriber.save
           Spree::Chimpy::Subscription.new(@subscriber).subscribe
           # user = Spree::User.where(email:params[:chimpy_subscriber][:email]).first
@@ -49,5 +53,14 @@ class Spree::Chimpy::SubscribersController < Spree::BaseController
   def success
     flash[:newsletter_subscription_tracking] = "nothing special"
     render "create"
+  end
+
+  private
+
+  def retrieve_utm_cookies
+    cookies.permanent[:utm_source] = cookies[:original_utm_source] if cookies[:original_utm_source]
+    cookies.permanent[:utm_campaign] = cookies[:original_utm_campaign] if cookies[:original_utm_campaign]
+    cookies.permanent[:utm_medium] = cookies[:original_utm_medium] if cookies[:original_utm_medium]
+    cookies.permanent[:utm_term] = cookies[:original_utm_term] if cookies[:original_utm_term]
   end
 end
