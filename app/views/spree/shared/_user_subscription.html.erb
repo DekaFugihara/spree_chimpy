@@ -4,7 +4,7 @@
     <%= label :spree_user, :subscribed, t("spree.chimpy.subscribed_label") %>
 
     <div class="user_type" style="display:none">
-      <input type="hidden" id="user_type" name="spree_user[user_type]" value="Me Interessa Comprar e Vender">
+      <input type="hidden" id="profile" name="spree_user[profile]" value="<%= @spree_user.profile %>">
       Tenho interesse em:
       <input type="checkbox" id="usertype_buyer" name="usertype_buyer" value="Me Interessa Apenas Comprar" checked="checked"><label for="usertype_buyer">Comprar</label>
       <input type="checkbox" id="usertype_seller" name="usertype_seller" value="Me Interessa Apenas Vender" checked="checked"><label for="usertype_seller">Vender</label>
@@ -17,13 +17,13 @@
 $("#user-subscribe-container .user_type input[type=checkbox]").on("change", function(){
   if($(this).is(":checked")){
     if($(this).siblings("input[type=checkbox]").first().is(":checked")){
-      $("#user-subscribe-container .user_type #user_type").val("Me Interessa Comprar e Vender");
+      $("#user-subscribe-container .user_type #profile").val("Me Interessa Comprar e Vender");
     } else {
-      $("#user-subscribe-container .user_type #user_type").val($(this).val());
+      $("#user-subscribe-container .user_type #profile").val($(this).val());
     }
   } else {
     if($(this).siblings("input[type=checkbox]").first().is(":checked")){
-      $("#user-subscribe-container .user_type #user_type").val($(this).siblings("input[type=checkbox]").first().val());
+      $("#user-subscribe-container .user_type #profile").val($(this).siblings("input[type=checkbox]").first().val());
     } else {
       alert("Pelo menos um deve estar selecionado!");
       $(this)[0].checked = true;
@@ -40,6 +40,13 @@ $("#user-subscribe-container #spree_user_subscribed").on("change", function(){
 $(document).ready(function(){
   if($("#user-subscribe-container #spree_user_subscribed").is(":checked")){
     $("#user-subscribe-container .user_type").show();
+    if($("#user-subscribe-container .user_type #profile").val() == "Me Interessa Apenas Comprar"){
+      $("#usertype_seller").attr("checked", false);
+    } else if($("#user-subscribe-container .user_type #profile").val() == "Me Interessa Apenas Vender"){
+      $("#usertype_buyer").attr("checked", false);
+    }
+  } else {
+    $("#user-subscribe-container .user_type #profile").removeAttr("value")
   }
 });
 </script>
