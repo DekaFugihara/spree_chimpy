@@ -28,6 +28,6 @@
 	</p>
 
 	<p class="button-container">
-		<%= f.submit "Cadastre-se e ganhe seu cupom", :class => 'submit button pink d3 mid', :id => 'op_subscribe' %>
+		<%= f.submit "Cadastre-se e ganhe seu cupom", :class => 'submit button pink d3 mid', :id => 'op_subscribe', :onclick => "ga('send', 'event', { eventCategory: 'Newsletter', eventAction: 'Subscription', eventLabel: 'Landing Cadastro'});" %>
 	</p>
 <% end %>
