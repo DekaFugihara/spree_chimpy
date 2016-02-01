@@ -1,10 +1,10 @@
 <% flash[:notice] = nil %>
 
-
 <%= @something_doesnt_exist %>
 
-<% if @errors.empty? %>
-  <% if @show_success_lightbox %>
+<% if @show_success_lightbox %>
+
+  <% if @errors.empty? %>
   $.fancybox(
     { 'href' : "/subscribers/success",
       'titleShow' : false,
@@ -20,6 +20,17 @@
     }
   );
   <% else %>
+  $.fancybox(
+    '<h1><%= @errors.join(" , ") %></h1>',
+    {
+      'centerOnScroll' : true
+    }
+  );
+  <% end %>
+
+<% else %>
+
+  <% if @errors.empty? || (@errors.size == 1 && @errors.include?(I18n.t("spree.chimpy.subscriber.already"))) %>
     $("#spree_user_email").val("<%= @subscriber.email %>");
     $("#spree_user_firstname").val("<%= @subscriber.nome %>");
     $("#spree_user_subscribed").val(<%= @subscriber.subscribed %>);
@@ -27,14 +38,13 @@
     $("#landing_form .errors").hide();
     $("#landing_form .first-step").hide();
     $("#landing_form .second-step").show();
-
+  <% else %>
+    $.fancybox(
+      '<h1><%= @errors.join(" , ") %></h1>',
+      {
+        'centerOnScroll' : true
+      }
+    );
   <% end %>
-<% else %>
-  $("#landing_form #mailchimp_subscribe_wrap").removeClass("loading");
-  $.fancybox(
-    '<h1><%= @errors.join(" , ") %></h1>',
-    {
-      'centerOnScroll' : true
-    }
-  );
+
 <% end %>

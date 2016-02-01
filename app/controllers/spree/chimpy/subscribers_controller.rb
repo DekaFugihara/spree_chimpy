@@ -9,7 +9,8 @@ class Spree::Chimpy::SubscribersController < Spree::BaseController
     elsif params[:chimpy_subscriber][:email] !~ /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/i
       @errors << I18n.t("spree.chimpy.subscriber.missing_email")
     else
-      if Spree::Chimpy::Subscriber.where(email: params[:chimpy_subscriber][:email]).first
+      @subscriber = Spree::Chimpy::Subscriber.where(email: params[:chimpy_subscriber][:email]).first
+      if @subscriber
         @errors << I18n.t("spree.chimpy.subscriber.already")
       else
         @subscriber = Spree::Chimpy::Subscriber.where(email: params[:chimpy_subscriber][:email]).first_or_initialize
